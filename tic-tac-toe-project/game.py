@@ -1,4 +1,4 @@
-from player import HumanPlayer, RandomComputerPlayer
+from player import HumanPlayer, RandomComputerPlayer, GeniusComputerPlayer
 import time
 import math
 
@@ -39,9 +39,7 @@ class TicTacToe:
         return self.board.count(' ')
 
     def make_move(self, square, letter):
-        # if it is a valid move the make the move
-        # return True or False accordingly
-        if self.board[square] == " ":
+        if self.board[square] == ' ':
             self.board[square] = letter
             if self.winner(square, letter):
                 self.current_winner = letter
@@ -112,6 +110,6 @@ def play(game, x_player, o_player, print_game=True):
 
 if __name__ == "__main__":
     x_player = HumanPlayer("X")
-    o_player = RandomComputerPlayer("O")
+    o_player = GeniusComputerPlayer("O")
     t = TicTacToe()
     play(t, x_player, o_player, print_game=True)
