@@ -1,4 +1,6 @@
 from player import HumanPlayer, RandomComputerPlayer
+import time
+import math
 
 
 class TicTacToe:
@@ -47,67 +49,65 @@ class TicTacToe:
         return False
 
     def winner(self, square, letter):
-        # winner if 3 in a row anywhere, gotta check all of them
-        # first check the row
-        row_ind = square // 3
-        row = self.board[(row_ind + 1)*3]
-        if all([spot == letter for spot in row]):
+        # check the row
+        row_ind = math.floor(square / 3)
+        row = self.board[row_ind*3:(row_ind+1)*3]
+        # print('row', row)
+        if all([s == letter for s in row]):
             return True
-
-        # check column
         col_ind = square % 3
         column = [self.board[col_ind+i*3] for i in range(3)]
-        if all([spot == letter for spot in column]):
+        # print('col', column)
+        if all([s == letter for s in column]):
             return True
-
-        # check diagonals
-        # but only if the square is an even number
-        # these are the only moves possible to win a diagonal
         if square % 2 == 0:
-            diagonal1 = [self.board[i]
-                         for i in [0, 4, 8]]  # left to right diagonal
-            if all([spot == letter for spot in [diagonal1[1]]]):
+            diagonal1 = [self.board[i] for i in [0, 4, 8]]
+            # print('diag1', diagonal1)
+            if all([s == letter for s in diagonal1]):
                 return True
-            diagonal2 = [self.board[i]
-                         for i in [2, 4, 6]]  # right to left diagonal
-            if all([spot == letter for spot in [diagonal2[1]]]):
+            diagonal2 = [self.board[i] for i in [2, 4, 6]]
+            # print('diag2', diagonal2)
+            if all([s == letter for s in diagonal2]):
                 return True
-        # if all above checks fail then there is currently no winner
         return False
 
 
 def play(game, x_player, o_player, print_game=True):
-  # returns the winner of the game(the letter) or None for a tie
+
     if print_game:
         game.print_board_nums()
+
     letter = 'X'  # Starting letter
     # Iterate while the game still has empty squares
     # Don't worry about a winner, since you can just return whoever breaks the loop
-    while game.empty_square():
-        if letter == "O":
+    while game.empty_squares():
+        if letter == 'O':
             square = o_player.get_move(game)
         else:
             square = x_player.get_move(game)
         if game.make_move(square, letter):
+
             if print_game:
-                print(letter + f" make a move to square {square}")
+                print(letter + ' makes a move to square {}'.format(square))
                 game.print_board()
-                print("")
+                print('')
 
             if game.current_winner:
                 if print_game:
-                    print(letter + " wins!")
-                return letter
-
-            letter = "O" if letter == "X" else "X"  # switches players
+                    print(letter + ' wins!')
+                return letter  # ends the loop and exits the game
+            letter = 'O' if letter == 'X' else 'X'  # switches players
             # the line above basically says
             # if letter == "X":
             #   letter = "O"
             # else:
             #   letter = "X"
+        # break for 0.8 seconds
 
-        if print_game:
-            print("It's a tie!")
+        time.sleep(.8)
+
+    if print_game:
+        print('It\'s a tie!')
 
 
 if __name__ == "__main__":
