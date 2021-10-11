@@ -23,12 +23,12 @@ def hangman():
     while len(word_letters) > 0 and lives > 0:
         # letters used
         # " ".join(['a','b','c','d']) --> 'a b c d'
-        print("You have ", lives, " lives. You have guessed the following letters already: ",
+        print("You have ", lives, " lives left. You have guessed the following letters already: ",
               " ".join(used_letters))
 
         # what current word is
         word_list = [
-            letter if letter in used_letters else '-' for letter in word]  # list compression
+            letter if letter in used_letters else '-' for letter in word]  # list comprehension
         print('Current word:', " ".join(word_list))
         user_letter = input("Guess a letter: ").upper()
         # Checks to see if the user input is in the alphabet array minus the letters in the array containing the already guessed letters
